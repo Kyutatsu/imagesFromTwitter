@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+
+{% load static %}
+
+<html lang='ja'>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit-=no">
+    <title>login to twitter</title>
+  </head>
+  <body>
+    <main>
+      {% comment %}request.session辞書にアクセスできたわ{% endcomment %}
+      {% if request.session.access_token %}
+      <p>現在access_tokenを持っています</p>
+      {% endif %}
+      <a href="{% url 'getImageFromTwitter:get_token' %}">
+        Twitterにloginする
+      </a>
+    </main>
+  </body>
+</html>
