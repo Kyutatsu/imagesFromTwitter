@@ -28,7 +28,7 @@ if os.environ.get('DEBUG') == 'True':
 else:
     DEBUG = False
 
-ALLOWED_HOSTS = ["127.0.0.1"]
+ALLOWED_HOSTS = ["127.0.0.1", "qtatsu.com", "133.167.122.80"]
 
 
 # Application definition
@@ -81,7 +81,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'OPTIONS': {
-            'read_default_file': os.environ.get('DATABASE_FILE'),
+            'read_default_file': os.environ.get('DATABASE_FILE_TW'),
         },
     }
 }
