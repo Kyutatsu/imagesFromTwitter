@@ -6,6 +6,7 @@ from urllib.parse import parse_qsl
 
 from django import forms
 from django.core.paginator import Paginator
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
@@ -29,6 +30,7 @@ else:
     oauth_callback = "Chack DEBUG vars."
 
 
+@login_required
 def index(request):
     request.session['tintin'] = 'otinpo'
     return render(
@@ -38,6 +40,7 @@ def index(request):
     )
 
 
+@login_required
 def login_twitter(request):
     """OAuth1認証する."""
     twitter_session = OAuth1Session(APIKEY, APISECRETKEY)
@@ -61,7 +64,7 @@ def login_twitter(request):
                 )
         )
 
-
+@login_required
 def get_token(request):
     """login_twitterでtwitter認証画面=>認証完了後, call_backする場所.
 
@@ -89,7 +92,7 @@ def get_token(request):
     else:
         return HttpResponse('tokenが取得できません')
 
-
+@login_required
 def get_images_from_name(request):
     """twitter user名(@以下)から,可能な限り画像ツイートを回収する。
 
@@ -181,7 +184,7 @@ def get_images_from_name(request):
             }
     )
 
-
+@login_required
 def label_to_images(request):
     """db中のデータのうち、未ラベルのデータを取得してラベルする"""
     ImageLabelFormSet = forms.modelformset_factory(
