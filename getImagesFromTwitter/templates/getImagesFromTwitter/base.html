@@ -14,9 +14,21 @@
       {% if request.session.access_token %}
       <p>現在access_tokenを持っています</p>
       {% endif %}
-      <a href="{% url 'getImageFromTwitter:get_token' %}">
-        Twitterにloginする
-      </a>
+      <div> 
+        <a href="{% url 'getImagesFromTwitter:login_twitter' %}">
+          Twitterにloginする
+        </a>
+      </div>
+      <div>
+        <a href="{% url 'getImagesFromTwitter:get_images' %}">
+          いらすとげったー
+        </a>
+      <div>
+        <a href="{% url 'getImagesFromTwitter:label' %}">
+          らべりんぎんぐ
+        </a>
+      </div>
+      </div>
     </main>
   </body>
 </html>

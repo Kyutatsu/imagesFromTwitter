@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang='ja'>
+  <head>
+    <meta charset='utf-8'>
+    <title>get images</title>
+  </head>
+  <body>
+    <main>
+      <form action="#"
+            method="POST">
+        {% csrf_token %}
+        {% for field in form %}
+          <ol>
+          {% for sp in field %}
+            <li>
+            {{ sp }}
+            </li>
+          {% endfor %}
+          </ol>
+        {% endfor %}
+        <button type="submit">GO!</button>
+      </form>
+    </main>
+  </body>
+</html>

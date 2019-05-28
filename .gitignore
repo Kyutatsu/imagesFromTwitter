@@ -19,3 +19,4 @@ tests/.coverage
 build/
 tests/report/
 media/
+testdata

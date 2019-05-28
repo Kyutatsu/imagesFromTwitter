@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <title>illustrator name</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet"
+          href={% static "node_modules/bootstrap/dist/css/bootstrap.min.css" %}>
+  <head>
+  
+  <body>
+    <main>
+      <form action="{% url 'getImagesFromTwitter:get_images' %}" method='POST'>
+        {% csrf_token %}
+        {% for fields in form %}
+          <ul>
+          {% for field in fields %}
+            <li>
+              {{ field }}
+            </li>
+          {% endfor %}
+          </ul>
+        {% endfor %}
+        <button type="submit" class="btn btn-primary">GO!</button>
+      </form>
+    </main>
+    <script src={% static "node_modules/jquery/dist/jquery.slim.min.js" %}></script>
+    <script src={% static "node_modules/popper.js/dist/umd/popper.min.js" %}></script>
+    <script src={% static "node_modules/bootstrap/dist/js/bootstrap.min.js" %}></script>
+  </body>
+</html>
