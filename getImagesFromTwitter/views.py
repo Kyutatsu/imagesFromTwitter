@@ -15,8 +15,8 @@ from getImagesFromTwitter.models import Image
 from getImagesFromTwitter.forms import ImageLabelForm, IllustratorForm
 
 
-APIKEY = os.environ.get('ApiKey')
-APISECRETKEY = os.environ.get('ApiSecretKey')
+APIKEY = os.environ.get('ApiKey_TW')
+APISECRETKEY = os.environ.get('ApiSecretKey_TW')
 # 開発環境->DEBUG = True, CentOS->DEBUG = Falseで
 # 区別するので、以下のように分岐させる。
 # settings.pyから読むことはできない。(おそらくここで読む方が先)
