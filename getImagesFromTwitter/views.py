@@ -200,7 +200,7 @@ def label_to_images(request):
         no_label_images = Image.objects.filter(label__exact=None)
         max_id = no_label_images.order_by('id')[0].id + 10
         if not max_id:
-            HttpResonse('未ラベルのサンプルはありません')
+            HttpResponse('未ラベルのサンプルはありません')
         images = no_label_images.filter(id__lt=max_id)
         formset = ImageLabelFormSet(
                 request.POST,

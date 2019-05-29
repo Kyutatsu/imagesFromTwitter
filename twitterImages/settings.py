@@ -28,7 +28,7 @@ if os.environ.get('DEBUG') == 'True':
 else:
     DEBUG = False
 
-ALLOWED_HOSTS = ["127.0.0.1", "qtatsu.com", "133.167.122.80"]
+ALLOWED_HOSTS = ["127.0.0.1", "www.qtatsu.com", "qtatsu.com", "133.167.122.80"]
 
 
 # Application definition
