@@ -23,6 +23,7 @@ class ImageLabelForm(forms.ModelForm):
                 (0, 'イラスト'),
                 (1, '写真'),
                 (2, 'スクショ'),
+                (3, 'そのほか'),
         ]
         fields = ('label',)
         widgets = {

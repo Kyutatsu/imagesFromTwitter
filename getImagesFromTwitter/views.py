@@ -207,7 +207,11 @@ def label_to_images(request):
                 queryset=images
         )
         if formset.is_valid():
-            formset.save()
+            f = formset.save()
+            for image in f:
+                # なぜかこれ逆から設定しなければと思ってたけどそんなことなかった。
+                image.labeler = request.user
+                image.save()
             return redirect(
                     reverse('getImagesFromTwitter:label'),
             )

@@ -14,7 +14,7 @@ class Image(models.Model):
     favorite_count = models.IntegerField()
     has_multiple_media = models.BooleanField()
     label = models.IntegerField(null=True)
-    labeler = models.OneToOneField(
+    labeler = models.ForeignKey(
             User,
             on_delete=models.SET_NULL,
             null=True,
