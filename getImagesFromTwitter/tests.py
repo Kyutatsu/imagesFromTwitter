@@ -1,4 +1,5 @@
 from django.test import TestCase
+import codecs
 import datetime
 import json
 import pickle
@@ -70,8 +71,8 @@ class GeneralTests(TestCase):
                     tweet['media_url_https'],
                     'https://pbs.twimg.com/media/D7JMdYdV4AAuGfj.png'
             )
-
-            self.assertEqual(tweet['text'], 'たんたいがぞうてすと https://t.co/N7Zz0M29cf')
+            btext = codecs.encode('たんたいがぞうてすと https://t.co/N7Zz0M29cf')
+            self.assertEqual(tweet['text'], btext)
             self.assertEqual(tweet['hashtags_text'], '[]')
             self.assertEqual(tweet['retweet_count'], 0)
             self.assertEqual(tweet['favorite_count'], 0)
@@ -96,7 +97,8 @@ class GeneralTests(TestCase):
             self.assertEqual(tweet['screen_name'], "qtatsu_q")
             self.assertEqual(tweet['media_id_str'],media_obj[idx][0])
             self.assertEqual(tweet['media_url_https'], media_obj[idx][1])
-            self.assertEqual(tweet['text'], 'ふくすうがぞうてすと https://t.co/5hlItlr8s8')
+            btext = codecs.encode('ふくすうがぞうてすと https://t.co/5hlItlr8s8')
+            self.assertEqual(tweet['text'], btext)
             self.assertEqual(tweet['hashtags_text'], '[]')
             self.assertEqual(tweet['retweet_count'], 0)
             self.assertEqual(tweet['favorite_count'], 0)

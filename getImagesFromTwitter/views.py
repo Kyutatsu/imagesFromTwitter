@@ -1,3 +1,4 @@
+import codecs
 import datetime
 import json
 import os
@@ -148,7 +149,10 @@ def get_images_from_name(request):
             tweets_for_render = [] # tempaltでgeneratorが動かないからこうした。書き直したい.
             for medias in tweets_with_photo:
                 for media in medias:
-                    tweets_for_render.append(media)
+                    # 表示用にtextをbynary=>strにする
+                    media_cp = media.copy()
+                    media_cp['text'] = codecs.decode(media_cp.get('text',''))
+                    tweets_for_render.append(media_cp)
                     image = Image(**media)
                     if form.cleaned_data.get('save_status') == 'save':
                         # すでにmediaが存在しないかチェック。
@@ -275,7 +279,7 @@ def get_items_from_tweet(tweet):
         twdict['media_id_str'] = media.get('id_str')
         twdict['media_url_https'] = media.get('media_url_https')
         twdict['has_multiple_media'] = True if len(medias) >1 else False
-        twdict['text'] = tweet.get('text')
+        twdict['text'] = codecs.encode(tweet.get('text'))
         twdict['hashtags_text'] = []
         # entitiesが存在しないかもしれないので、andで繋げ順に評価した。
         if tweet.get('entities') and tweet.get('entities').get('hashtags'):
