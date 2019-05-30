@@ -261,6 +261,7 @@ def label_to_images(request):
     )
 
 
+@login_required
 def display_labeled_images(request):
     """ラベルづけされたイメージを表示する。"""
     if request.method == 'POST':
