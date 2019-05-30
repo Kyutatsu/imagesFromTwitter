@@ -20,6 +20,26 @@
          href="{% url 'getImagesFromTwitter:index' %}">
         indexに戻る
       </a>
+      <div class="p-2 m-2">
+        <p class="text-primary m-2 p-2">
+          ラベル済み / トータル画像数 :
+          <span class="bg-primary text-white font-weight-bold m-2 p-2">
+            {{ img_counts.labeled }} / {{ img_counts.total }}
+          </span>
+        </p>
+        <p>
+          イラスト: <span class="font-weight-bold">{{ img_counts.illust }}<span> 枚
+        </p>
+        <p>
+          写真:  <span class="font-weight-bold">{{ img_counts.photo }}<span> 枚
+        </p>
+        <p>
+          スクショ:  <span class="font-weight-bold">{{ img_counts.sc }}<span> 枚
+        </p>
+        <p>
+          その他:   <span class="font-weight-bold">{{ img_counts.other }}<span> 枚
+        </p>
+      </div>
       <form method='POST'>
         <div class="d-flex flex-wrap">
             {% csrf_token %}

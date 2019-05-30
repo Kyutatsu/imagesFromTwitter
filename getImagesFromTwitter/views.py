@@ -191,6 +191,22 @@ def label_to_images(request):
             Image,
             form=ImageLabelForm,
     )
+    allimages = Image.objects.all()
+    total_images_number = allimages.count()
+    labeled_images_number = allimages.exclude(label__exact=None).count()
+    illust_images = allimages.filter(label__exact=0).count()
+    photo_images = allimages.filter(label__exact=1).count()
+    sc_images = allimages.filter(label__exact=2).count()
+    other_images = allimages.filter(label__exact=3).count()
+    img_counts = {
+            'total': total_images_number,
+            'labeled': labeled_images_number,
+            'illust': illust_images,
+            'photo': photo_images,
+            'sc': sc_images,
+            'other': other_images,
+    }
+
     if request.method == 'POST':
         # docに従ってここでquery取得したが、これGET時とPOST時の間で他から変更
         # される可能性ないのか？きちんと閉じられているのだろうか?
@@ -233,6 +249,9 @@ def label_to_images(request):
             {
                 'formset': formset,
                 'zips': zips,
+                # 'total_images_number': total_images_number,
+                # 'labeled_images_number': labeled_images_number,
+                'img_counts': img_counts,
             }
     )
 
