@@ -198,9 +198,9 @@ def label_to_images(request):
         # label無しの最も小さいid + 20をmax_idとし
         # 、それ以下をとることで20個取得する。
         no_label_images = Image.objects.filter(label__exact=None)
+        if not no_label_images:
+            return HttpResponse('未ラベルのサンプルはありません')
         max_id = no_label_images.order_by('id')[0].id + 10
-        if not max_id:
-            HttpResponse('未ラベルのサンプルはありません')
         images = no_label_images.filter(id__lt=max_id)
         formset = ImageLabelFormSet(
                 request.POST,
@@ -219,9 +219,9 @@ def label_to_images(request):
         # 冗長だし異なるdata取る可能性あるように思うが
         # django公式documentではここでもquery取得してる。
         no_label_images = Image.objects.filter(label__exact=None)
+        if not no_label_images:
+            return HttpResponse('未ラベルのサンプルはありません')
         max_id = no_label_images.order_by('id')[0].id + 10
-        if not max_id:
-            HttpResonse('未ラベルのサンプルはありません')
         images = no_label_images.filter(id__lt=max_id)
         formset = ImageLabelFormSet(queryset=images)
     # template内部でzipできないのでこちらで作った。
