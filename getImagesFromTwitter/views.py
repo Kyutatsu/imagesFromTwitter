@@ -14,6 +14,7 @@ from django.urls import reverse
 from django import views
 from getImagesFromTwitter.models import Image
 from getImagesFromTwitter.forms import ImageLabelForm, IllustratorForm
+from getImagesFromTwitter.forms import DisplaySelectForm
 
 
 APIKEY = os.environ.get('ApiKey_TW')
@@ -257,6 +258,29 @@ def label_to_images(request):
                 # 'labeled_images_number': labeled_images_number,
                 'img_counts': img_counts,
             }
+    )
+
+
+def display_labeled_images(request):
+    """ラベルづけされたイメージを表示する。"""
+    if request.method == 'POST':
+        form = DisplaySelectForm(request.POST)
+        if form.is_valid():
+            # choicefieldでstrになってるのでintに戻す
+            label = form.cleaned_data.get('label')
+            all_images = Image.objects.all()
+            images = all_images.filter(label__exact=label)
+            return render(
+                    request,
+                    'getImagesFromTwitter/display_labeled_images_post.html',
+                    {'images': images}
+            )
+    else:
+        form = DisplaySelectForm()
+    return render(
+            request,
+            'getImagesFromTwitter/display_labeled_images_get.html',
+            {'form': form},
     )
 
 

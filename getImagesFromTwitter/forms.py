@@ -29,3 +29,17 @@ class ImageLabelForm(forms.ModelForm):
         widgets = {
                 'label': forms.RadioSelect(choices=CHOICES)
         }
+
+
+class DisplaySelectForm(forms.Form):
+    # この場合strになってしまう
+    CHOICES = [
+                (0, 'イラスト'),
+                (1, '写真'),
+                (2, 'スクショ'),
+                (3, 'そのほか'),
+    ]
+    label = forms.ChoiceField(
+            widget=forms.RadioSelect,
+            choices=CHOICES,
+    )

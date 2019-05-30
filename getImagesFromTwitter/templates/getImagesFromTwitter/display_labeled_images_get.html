@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <title>labeled images</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet"
+          href={% static "node_modules/bootstrap/dist/css/bootstrap.min.css" %}>
+  </head>
+  <body>
+    <main>
+      <a class="btn btn-primary"
+         href="{% url 'getImagesFromTwitter:index' %}">
+        indexに戻る
+      </a>
+      <form method="POST">
+        {% csrf_token %}
+        {{ form.as_table }}
+        <button class="btn btn-secondary">GO</button>
+      </form>
+    </main>
+    <script src={% static "node_modules/jquery/dist/jquery.slim.min.js" %}></script>
+    <script src={% static "node_modules/popper.js/dist/umd/popper.min.js" %}></script>
+    <script src={% static "node_modules/bootstrap/dist/js/bootstrap.min.js" %}></script>
+  </body>
+</html>

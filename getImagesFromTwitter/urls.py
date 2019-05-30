@@ -9,4 +9,5 @@ urlpatterns = [
         path('login_twitter/', views.login_twitter, name='login_twitter'),
         path('get_images/', views.get_images_from_name, name='get_images'),
         path('label_to_images/', views.label_to_images, name='label'),
+        path('display_labeled_images/', views.display_labeled_images, name='labeled'),
 ]
