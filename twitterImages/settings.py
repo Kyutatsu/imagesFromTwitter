@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'getImagesFromTwitter.apps.GetimagesfromtwitterConfig',
+    'imageclf.apps.ImageclfConfig',
 ]
 
 MIDDLEWARE = [

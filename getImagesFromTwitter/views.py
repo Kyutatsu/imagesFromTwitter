@@ -34,7 +34,6 @@ else:
 
 @login_required
 def index(request):
-    request.session['tintin'] = 'otinpo'
     return render(
         request,
         'getImagesFromTwitter/base.html',
@@ -315,5 +314,10 @@ def get_items_from_tweet(tweet):
         twdict['favorite_count'] = tweet.get('favorite_count')
         twdict['label'] = None
         twdict['labeler'] = None
+        # ツイートのurlはなぜか含まれないので、user名,tweetidから自作する。
+        pre_url_string = "https://twitter.com/{name}/status/{id}"
+        twdict['tweet_url'] = pre_url_string.format(
+                **{'name': twdict['screen_name'], 'id': twdict['id_str']}
+        )
         # mediaを一つ回すたびにyieldする
         yield twdict

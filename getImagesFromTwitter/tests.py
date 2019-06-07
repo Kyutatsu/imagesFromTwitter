@@ -79,6 +79,10 @@ class GeneralTests(TestCase):
             self.assertFalse(tweet['has_multiple_media'])
             self.assertIs(tweet['label'], None)
             self.assertIs(tweet['labeler'], None)
+            self.assertEqual(
+                    tweet['tweet_url'],
+                    "https://twitter.com/qtatsu_q/status/1131050527704305664"
+            )
         self.assertEqual(idx+1, 1)
 
     def test_get_items_from_tweet_3_photos(self):
@@ -105,4 +109,8 @@ class GeneralTests(TestCase):
             self.assertTrue(tweet['has_multiple_media'])
             self.assertIs(tweet['label'], None)
             self.assertIs(tweet['labeler'], None)
+            self.assertEqual(
+                    tweet['tweet_url'],
+                    "https://twitter.com/qtatsu_q/status/1131050411501035520"
+            )
         self.assertEqual(idx+1, 3)
