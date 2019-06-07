@@ -153,6 +153,7 @@ def get_images_from_name(request):
                     media_cp = media.copy()
                     media_cp['text'] = codecs.decode(media_cp.get('text',''))
                     tweets_for_render.append(media_cp)
+                    # PILのImageと同じで紛らわしい名前だから良くない！！
                     image = Image(**media)
                     if form.cleaned_data.get('save_status') == 'save':
                         # すでにmediaが存在しないかチェック。

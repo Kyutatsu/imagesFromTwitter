@@ -1,4 +1,13 @@
+import codecs
 import os
+import json
+import pickle
+import numpy as np
+import pandas as pd
+# from sklearn import 
+from requests_oauthlib import OAuth1Session
+
+
 from django.shortcuts import render
 from django.http import HttpResponse
 
@@ -6,12 +15,17 @@ from getImagesFromTwitter.views import get_items_from_tweet
 from imageclf.forms import IllustratorForm
 
 
+
 APIKEY = os.environ.get('ApiKey_TW')
 APISECRETKEY = os.environ.get('ApiSecretKey_TW')
 
 
 def index(request):
-    return HttpResponse('ほげぇ')
+    return render(
+            request,
+            'imageclf/index.html',
+            {}
+    )
 
 def get_and_classify_images(request):
     """twitter user名(@以下)から,可能な限り画像ツイートを回収する。
@@ -66,37 +80,71 @@ def get_and_classify_images(request):
                     # 表示用にtextをbynary=>strにする
                     media_cp = media.copy()
                     media_cp['text'] = codecs.decode(media_cp.get('text',''))
+                    # rendering用の画像obj(自作の辞書)のリスト
                     tweets_for_render.append(media_cp)
-                    image = Image(**media)
-                    if form.cleaned_data.get('save_status') == 'save':
+                    # Image, PILのImageと同名だからこの名前よくない。
+                    # image = Image(**media)
+                    if form.cleaned_data.get('clf_status') == 'clf':
                         # すでにmediaが存在しないかチェック。
-                        existing = Image.objects.filter(
-                                media_id_str__exact=media.get('media_id_str')
-                        )
-                        if existing:
-                            texts += '<p>{}はすでに保存されています</p>'.format(
-                                    media.get('media_id_str')
+                        # process with classifier
+                        with open('knn_fav_rt_mul_learn.dump', mode='rb') as f:
+                            knn = pickle.load(f)
+                        with open('scaler.dump', mode='rb') as f:
+                            scaler = pickle.load(f)
+                        with open('X_train.dump', mode='rb') as f:
+                            X_train = pickle.load(f)
+                        scaler.fit(X_train)
+                        # np.arrayの、ndarray[ndarray]でboolianでインデックス指定使いたいので
+                        data_array = ""
+                        for_render_data = ""
+                        for num, media in enumerate(tweets_for_render):
+                            temp_params = np.array(
+                                [
+                                    int(media['retweet_count']), 
+                                    int(media['favorite_count']),
+                                    int(media['has_multiple_media']),
+                                ]
                             )
-                        else:
-                            image.save()
-            # 取得した画像の表示
-            # redirectした方がいいと思うが、ユーザが使うメソではないので妥協。 
-            # >>関数化して、ユーザが使う部分はそれを再利用して作り直す。
-            # 画像もdbも一時保存して、それを同定するフラグをurlかsessionで渡す。
+                            temp_render_params = np.array(
+                                [
+                                    media['media_id_str'],
+                                    media['media_url_https'],
+                                    media['text'],
+                                    media['tweet_url'],
+                                ]
+                            )
+                            if num == 0:
+                                data_array = temp_params.reshape((1,-1))
+                                for_render_data = temp_render_params.reshape((1,-1))
+                            else:
+                                data_array = np.concatenate(
+                                    (data_array, temp_params.reshape((1, -1)))
+                                )
+                                for_render_data = np.concatenate(
+                                    (for_render_data, temp_render_params.reshape((1,-1)))
+                                )
+                        # ここで前のデータ使ってfitしないとダメなの欠陥では？
+                        data_array_norm = scaler.transform(data_array)
+                        classified = knn.predict(data_array_norm)
+                        illust_data = for_render_data[classified=='illust']
+                        photo_data = for_render_data[classified=='photo']
+                        screen_data = for_render_data[classified=='screen']
+            # redirectした方がいい
             return render(
                 request,
-                'getImagesFromTwitter/images_list.html', 
+                'imageclf/show_images.html', 
                 {
-                    'tweets': tweets_for_render,
+                    'illust_data': list(illust_data),
+                    'photo_data': list(photo_data),
+                    'screen_data': list(screen_data),
                 }
-
             )
     else:
         form = IllustratorForm()
     # GET時とform.is_varid() == False時はform入力画面へ。
     return render(
             request,
-            'getImagesFromTwitter/get_illustrator_name.html',
+            'imageclf/get_illustrator_name.html',
             {
                 'form': form,
             }
