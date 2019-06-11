@@ -44,9 +44,11 @@
         <div class="d-flex flex-wrap">
             {% csrf_token %}
             {{ formset.management_form }}
-            {% for image, form in zips %}
+            {% for image, form, txt in zips %}
               <div class="sizeofthumb p-2 border">
                 <img class="img-fluid" src="{{ image.media_url_https }}">
+                <p>{{ image.screen_name }}</p>
+                <p>{{ txt }}</p>
                 {{ form }} 
               </div>
             {% endfor %}

@@ -154,6 +154,8 @@ def get_images_from_name(request):
                     media_cp['text'] = codecs.decode(media_cp.get('text',''))
                     tweets_for_render.append(media_cp)
                     # PILのImageと同じで紛らわしい名前だから良くない！！
+                    # tweet_urlを消す。よくない処理なのでリファクタリングする。
+                    media.pop('tweet_url')
                     image = Image(**media)
                     if form.cleaned_data.get('save_status') == 'save':
                         # すでにmediaが存在しないかチェック。
@@ -245,9 +247,11 @@ def label_to_images(request):
         max_id = no_label_images.order_by('id')[0].id + 10
         images = no_label_images.filter(id__lt=max_id)
         formset = ImageLabelFormSet(queryset=images)
+        # template場でb''をデコードできないのでここで変換する。
+        texts = [codecs.decode(img.text) for img in images]
     # template内部でzipできないのでこちらで作った。
     # formsetも別途渡しているのは、management_form部分が必須なので。
-    zips = zip(images, formset)
+    zips = zip(images, formset, texts)
     return render(
             request,
             'getImagesFromTwitter/labeling.html',
