@@ -275,6 +275,8 @@ def display_labeled_images(request):
             label = form.cleaned_data.get('label')
             all_images = Image.objects.all()
             images = all_images.filter(label__exact=label)
+            # 多いので、最新30のみ表示。
+            images = images.order_by('-id')[:30]
             return render(
                     request,
                     'getImagesFromTwitter/display_labeled_images_post.html',
