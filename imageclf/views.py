@@ -6,6 +6,9 @@ import numpy as np
 import pandas as pd
 # from sklearn import 
 from requests_oauthlib import OAuth1Session
+import requests
+from io import BytesIO
+import makecsv
 
 
 from django.shortcuts import render
@@ -38,7 +41,9 @@ def get_and_classify_images(request):
             twitter_session = OAuth1Session(APIKEY, APISECRETKEY)
             # 初回はmax_idを指定したくない。Noneにすれば指定なしと同じになる。
             max_id = None
-            n = 3200 / 200   # ツイート取得可能数
+            # 一旦変更(後で最大まで直す)
+            # n = 3200 / 200   # ツイート取得可能数
+            n = 5
             tweets_with_photo = []
             for i in range(int(n)):
                 params = {
@@ -84,59 +89,112 @@ def get_and_classify_images(request):
                     tweets_for_render.append(media_cp)
                     # Image, PILのImageと同名だからこの名前よくない。
                     # image = Image(**media)
-                    if form.cleaned_data.get('clf_status') == 'clf':
-                        # すでにmediaが存在しないかチェック。
-                        # process with classifier
-                        with open('knn_fav_rt_mul_learn.dump', mode='rb') as f:
-                            knn = pickle.load(f)
-                        with open('scaler.dump', mode='rb') as f:
-                            scaler = pickle.load(f)
-                        with open('X_train.dump', mode='rb') as f:
-                            X_train = pickle.load(f)
-                        scaler.fit(X_train)
+           
+            if form.cleaned_data.get('clf_status') == 'clf':
+                # すでにmediaが存在しないかチェック。
+                # process with classifier
+                with open('clf_and_scaler_Xtrain__48feature', mode='rb') as f:
+                    data = pickle.load(f)
+                # probability=Trueのやつ
+                with open('clf7.dump', mode='rb') as f:
+                    clf = pickle.load(f)
+                scaler = data['scaler']
+                X_train = data['X_train']
+                # clf = data['clf']
+                scaler.fit(X_train)
+
+                illusts = []
+                photos = []
+
+                for media in tweets_for_render:
+                    response = requests.get(media['media_url_https'])
+                    if response.status_code == 200:
+                        fileobj = BytesIO(response.content)
+                        temp = makecsv.get_array_from_imgfile(fileobj, color='RGB')
+                        mean = np.mean(temp, axis=0)
+                        mean = mean.reshape((1,-1))
+                        variance = np.var(temp, axis=0)
+                        variance = variance.reshape((1,-1))
+                        qsorigin = np.percentile(
+                                temp,
+                                [75, 50, 25],
+                                axis=0
+                        )
+                        qsorigin = qsorigin.reshape((1,-1))
+                        qs = np.percentile(
+                                temp,
+                                [100,90,80,70,60,50,40,30,20,10,0],
+                                axis=0
+                        )
+                        qs = qs.reshape((1,-1))
+                        features = np.concatenate((mean, variance,qsorigin, qs), axis=1)
+                        # features = features.reshape((1,-1))
+                        features_scaled = scaler.transform(features)
+                        predict = clf.predict(features_scaled)[0]
+                        if predict == 0:
+                            proba = clf.predict_proba(features_scaled)[0,0]
+                            media['proba'] = proba
+                            illusts.append(media)
+                        elif predict == 1:
+                            proba = clf.predict_proba(features_scaled)[0,1]
+                            media['proba'] = proba
+                            photos.append(media)
+            else: # 分類しない時
+                return render(
+                    request,
+                    'imageclf/show_images.html', 
+                    {
+                        'images': tweets_for_render,
+                    }
+                )
+
                         # np.arrayの、ndarray[ndarray]でboolianでインデックス指定使いたいので
-                        data_array = ""
-                        for_render_data = ""
-                        for num, media in enumerate(tweets_for_render):
-                            temp_params = np.array(
-                                [
-                                    int(media['retweet_count']), 
-                                    int(media['favorite_count']),
-                                    int(media['has_multiple_media']),
-                                ]
-                            )
-                            temp_render_params = np.array(
-                                [
-                                    media['media_id_str'],
-                                    media['media_url_https'],
-                                    media['text'],
-                                    media['tweet_url'],
-                                ]
-                            )
-                            if num == 0:
-                                data_array = temp_params.reshape((1,-1))
-                                for_render_data = temp_render_params.reshape((1,-1))
-                            else:
-                                data_array = np.concatenate(
-                                    (data_array, temp_params.reshape((1, -1)))
-                                )
-                                for_render_data = np.concatenate(
-                                    (for_render_data, temp_render_params.reshape((1,-1)))
-                                )
-                        # ここで前のデータ使ってfitしないとダメなの欠陥では？
-                        data_array_norm = scaler.transform(data_array)
-                        classified = knn.predict(data_array_norm)
-                        illust_data = for_render_data[classified=='illust']
-                        photo_data = for_render_data[classified=='photo']
-                        screen_data = for_render_data[classified=='screen']
+                       # data_array = ""
+                       # for_render_data = ""
+                       # for num, media in enumerate(tweets_for_render):
+                       #     temp_params = np.array(
+                       #         [
+                       #             int(media['retweet_count']), 
+                       #             int(media['favorite_count']),
+                       #             int(media['has_multiple_media']),
+                       #         ]
+                       #     )
+                       #     temp_render_params = np.array(
+                       #         [
+                       #             media['media_id_str'],
+                       #             media['media_url_https'],
+                       #             media['text'],
+                       #             media['tweet_url'],
+                       #         ]
+                       #     )
+                       #     if num == 0:
+                       #         data_array = temp_params.reshape((1,-1))
+                       #         for_render_data = temp_render_params.reshape((1,-1))
+                       #     else:
+                       #         data_array = np.concatenate(
+                       #             (data_array, temp_params.reshape((1, -1)))
+                       #         )
+                       #         for_render_data = np.concatenate(
+                       #             (for_render_data, temp_render_params.reshape((1,-1)))
+                       #         )
+                       # # ここで前のデータ使ってfitしないとダメなの欠陥では？
+                       # data_array_norm = scaler.transform(data_array)
+                       # classified = knn.predict(data_array_norm)
+
+                        # illust_data = for_render_data[classified=='illust']
+                        # photo_data = for_render_data[classified=='photo']
+
+                       #  screen_data = for_render_data[classified=='screen']
             # redirectした方がいい
+            illusts = sorted(illusts, key=lambda x: x['proba'], reverse=True)
+            photos = sorted(photos, key= lambda x: x['proba'], reverse=True)
             return render(
                 request,
                 'imageclf/show_images.html', 
                 {
-                    'illust_data': list(illust_data),
-                    'photo_data': list(photo_data),
-                    'screen_data': list(screen_data),
+                    'illust_data': illusts,
+                    'photo_data': photos,
+                   #  'screen_data': list(screen_data),
                 }
             )
     else:
