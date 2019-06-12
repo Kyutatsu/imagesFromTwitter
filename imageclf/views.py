@@ -17,6 +17,8 @@ from django.http import HttpResponse
 from getImagesFromTwitter.views import get_items_from_tweet
 from imageclf.forms import IllustratorForm
 
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 
 
 APIKEY = os.environ.get('ApiKey_TW')
@@ -93,7 +95,8 @@ def get_and_classify_images(request):
             if form.cleaned_data.get('clf_status') == 'clf':
                 # すでにmediaが存在しないかチェック。
                 # process with classifier
-                with open('final_tool.dump', mode='rb') as f:
+                path = os.path.join(BASE_DIR, 'final_tool.dump')
+                with open(path, mode='rb') as f:
                     data = pickle.load(f)
                 scaler = data['scaler']
                 X_train = data['X_train']
