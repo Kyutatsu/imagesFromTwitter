@@ -93,14 +93,11 @@ def get_and_classify_images(request):
             if form.cleaned_data.get('clf_status') == 'clf':
                 # すでにmediaが存在しないかチェック。
                 # process with classifier
-                with open('clf_and_scaler_Xtrain__48feature', mode='rb') as f:
+                with open('final_tool.dump', mode='rb') as f:
                     data = pickle.load(f)
-                # probability=Trueのやつ
-                with open('clf7.dump', mode='rb') as f:
-                    clf = pickle.load(f)
                 scaler = data['scaler']
                 X_train = data['X_train']
-                # clf = data['clf']
+                clf = data['clf']
                 scaler.fit(X_train)
 
                 illusts = []
@@ -115,19 +112,13 @@ def get_and_classify_images(request):
                         mean = mean.reshape((1,-1))
                         variance = np.var(temp, axis=0)
                         variance = variance.reshape((1,-1))
-                        qsorigin = np.percentile(
+                        qs = qsorigin = np.percentile(
                                 temp,
                                 [75, 50, 25],
                                 axis=0
                         )
-                        qsorigin = qsorigin.reshape((1,-1))
-                        qs = np.percentile(
-                                temp,
-                                [100,90,80,70,60,50,40,30,20,10,0],
-                                axis=0
-                        )
-                        qs = qs.reshape((1,-1))
-                        features = np.concatenate((mean, variance,qsorigin, qs), axis=1)
+                        qs = qs.reshape((1, -1))
+                        features = np.concatenate((mean, variance, qs), axis=1)
                         # features = features.reshape((1,-1))
                         features_scaled = scaler.transform(features)
                         predict = clf.predict(features_scaled)[0]

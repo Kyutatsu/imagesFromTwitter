@@ -21,17 +21,23 @@
         戻る
       </a>
 {% if not images %}
-      <h2>イラスト</h2>
-      <div class="d-flex flex-wrap">
-          {% for img in illust_data %}
-          <div class="sizeofthumb p-2">
-                    <a href="{{ img.tweet_url }}" target="_blank">
-                      <img class="img-fluid" src="{{ img.media_url_https }}">
-                    </a>
-                    <p>{{ img.text }}</p>
-          </div>
-          {% endfor %}
-      </div>
+<div class="container">
+  <div class="row">
+    <div class="col-6 bg-secondary">
+        <h2>イラスト</h2>
+        <div class="d-flex flex-wrap">
+            {% for img in illust_data %}
+            <div class="sizeofthumb p-2">
+                      <a href="{{ img.tweet_url }}" target="_blank">
+                        <img class="img-fluid" src="{{ img.media_url_https }}">
+                      </a>
+                      <p>{{ img.text }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="col-6 bg-light">
       <h2>写真</h2>
       <div class="d-flex flex-wrap">
           {% for img in photo_data %}
@@ -43,6 +49,9 @@
           </div>
           {% endfor %}
       </div>
+    </div>
+  </div>
+</div>
 {% else %}
       <div class="d-flex flex-wrap">
           {% for img in images %}
