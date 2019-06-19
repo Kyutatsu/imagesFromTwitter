@@ -1,34 +1,32 @@
-<!DOCTYPE html>
+{% extends "imageclf/index.html" %}
 {% load static %}
-<html>
-  <head>
-    <meta charset='utf-8'>
-    <title>illustrator name</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet"
-          href={% static "node_modules/bootstrap/dist/css/bootstrap.min.css" %}>
-  <head>
-  
-  <body>
-    <main>
-      <h1>画像を取得したいユーザのIDを記入してね！</h1>
-      <p>@(アットマーク)は入力しないでください</p>
-      <form action="{% url 'imageclf:clf' %}" method='POST'>
-        {% csrf_token %}
-        {% for fields in form %}
-          <ul>
-          {% for field in fields %}
-            <li>
-              {{ field }}
-            </li>
+
+{% block title_block %}username form{% endblock %}
+
+{% block main_block %}
+<div class="bg-light">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <h2>
+          画像を取得したい<strong>twitterユーザのID</strong>を入力してください
+        </h2>
+        <p class="text-danger">@(アットマーク)は入力しないでください!</p>
+      </div>
+      <div class="col-12">
+        <form action="{% url 'imageclf:clf' %}" method='POST' class="m-3">
+          {% csrf_token %}
+          {% for form in forms %}
+            {{ form.label }}
+            {{ form }}
+            <div class="text-muted">
+              {{ form.help_text|safe }}
+            </div>
           {% endfor %}
-          </ul>
-        {% endfor %}
-        <button type="submit" class="btn btn-primary">GO!</button>
-      </form>
-    </main>
-    <script src={% static "node_modules/jquery/dist/jquery.slim.min.js" %}></script>
-    <script src={% static "node_modules/popper.js/dist/umd/popper.min.js" %}></script>
-    <script src={% static "node_modules/bootstrap/dist/js/bootstrap.min.js" %}></script>
-  </body>
-</html>
+          <button type="submit" class="btn btn-primary mt-2">GO!</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

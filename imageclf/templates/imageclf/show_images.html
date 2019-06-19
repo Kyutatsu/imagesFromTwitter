@@ -1,51 +1,46 @@
-<!DOCTYPE html>
+{% extends "imageclf/index.html" %}
 {% load static %}
-<html>
-  <head>
-    <meta charset='utf-8'>
-    <title>images</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet"
-          href={% static "node_modules/bootstrap/dist/css/bootstrap.min.css" %}>
-    <style>
+
+{% block title_block %}results{% endblock %}
+
+{% block style_add_block %}
       .sizeofthumb {
         width: 20vw;
         height: auto;
       }
-    </style>
-  </head>
-  <body>
-    <main>
-      <a class="btn btn-primary"
-         href="{% url 'imageclf:index' %}">
-        戻る
-      </a>
+{% endblock %}
+
+{% block main_block %}
+
+<a class="btn btn-primary m-1 p-1"
+   href="{% url 'imageclf:index' %}">
+  戻る
+</a>
+
 {% if not images %}
-<div class="container">
+<div class="container m-1">
   <div class="row">
-    <div class="col-6 bg-secondary">
-        <h2>イラスト</h2>
+    <div class="col-md-6 bg-secondary">
+        <h2 class="col text-white align-self-center shadow">イラスト</h2>
         <div class="d-flex flex-wrap">
             {% for img in illust_data %}
-            <div class="sizeofthumb p-2">
+            <div class="sizeofthumb p-2 shadow-sm">
                       <a href="{{ img.tweet_url }}" target="_blank">
                         <img class="img-fluid" src="{{ img.media_url_https }}">
                       </a>
-                      <p>{{ img.text }}</p>
             </div>
             {% endfor %}
         </div>
     </div>
 
-    <div class="col-6 bg-light">
-      <h2>写真</h2>
+    <div class="col-md-6 bg-light">
+      <h2 class="col align-self-center shadow">写真</h2>
       <div class="d-flex flex-wrap">
           {% for img in photo_data %}
-          <div class="sizeofthumb p-2">
+          <div class="sizeofthumb p-2 shadow-sm">
                     <a href="{{ img.tweet_url }}" target="_blank">
                       <img class="img-fluid" src="{{ img.media_url_https }}">
                     </a>
-                    <p>{{ img.text }}</p>
           </div>
           {% endfor %}
       </div>
@@ -59,27 +54,11 @@
                     <a href="{{ img.tweet_url }}" target="_blank">
                       <img class="img-fluid" src="{{ img.media_url_https }}">
                     </a>
+                    <!--
                     <p>{{ img.text }}</p>
+                    -->
           </div>
           {% endfor %}
       </div>
 {% endif %}
-  <!--
-      <h2>スクショ(ゲーム画面など)</h2>
-      <div class="d-flex flex-wrap">
-          {% for img in screen_data %}
-          <div class="sizeofthumb p-2">
-                    <a href"{{ img.3 }}">
-                      <img class="img-fluid" src="{{ img.1 }}">
-                    </a>
-                    <p>{{ img.2 }}</p>
-          </div>
-          {% endfor %}
-      </div>
-    -->
-    </main>
-    <script src={% static "node_modules/jquery/dist/jquery.slim.min.js" %}></script>
-    <script src={% static "node_modules/popper.js/dist/umd/popper.min.js" %}></script>
-    <script src={% static "node_modules/bootstrap/dist/js/bootstrap.min.js" %}></script>
-  </body>
-</html>
+{% endblock %}

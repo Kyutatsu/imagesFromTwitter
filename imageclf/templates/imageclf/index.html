@@ -1,19 +1,55 @@
 <!DOCTYPE html>
 {% load static %}
+
 <html lang="ja">
   <head>
     <meta charset="utf8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit-=no">
-    <title>index</title>
+    <link
+    href="https://fonts.googleapis.com/css?family=Kosugi|Notable|Mitr"
+    rel="stylesheet">
+    <title>
+      {% block title_block %}index{% endblock %}
+    </title>
+    <link rel="stylesheet"
+          href={% static "node_modules/bootstrap/dist/css/bootstrap.min.css" %}>
+    <style>
+      .footer {
+        background-color: #f0f0f0;
+      }
+      main {
+        font-family: 'Kosugi', serif;
+      }
+      button {
+        font-family: 'Mitr';
+      }
+
+    {% block style_add_block %}{% endblock %}
+    </style>
   </head>
+
   <body>
     <main>
+    {% block main_block %}
       <div>
-        <a href="{% url 'imageclf:clf' %}">
-          いらすとげったー
+        <a class="btn btn-outline-primary m-4"
+           href="{% url 'imageclf:clf' %}">
+          イラストGET
         </a>  
       </div>
+    {% endblock %}
     </main>
+
+    <footer class="footer mt-auto py-3">
+      <div class="container">
+        <a href="mailto:qtatsunishiura@gmail.com"
+           target="_blank">連絡(メール)はこちら</a>
+        <p class="text-muted">© 2018 Kyutatsu</p>
+      </div>
+    </footer>
+    <script src={% static "node_modules/jquery/dist/jquery.slim.min.js" %}></script>
+    <script src={% static "node_modules/popper.js/dist/umd/popper.min.js" %}></script>
+    <script src={% static "node_modules/bootstrap/dist/js/bootstrap.min.js" %}></script>
   </body>
 </html>
 
