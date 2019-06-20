@@ -11,3 +11,5 @@ twitterではあるユーザのメディア欄という項目からユーザの�
 
 
 ## 構成
+
+![imageclf_gif](https://github.com/Kyutatsu/imagesFromTwitter/blob/staticfiles/imageclf4.gif)
