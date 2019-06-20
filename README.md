@@ -27,3 +27,6 @@ twitterではあるユーザのメディア欄という項目からユーザの�
 下図のようにしてデータの収集、ラベリング、trainingを行いました。**F1スコアは0.9程度**ありました(マイクロ平均です。"絵"は"写真"の5倍程度のサンプル量があり、precision,recallともに"絵"が高いです。最後の図を参照してください。)
 学習モデルはSVM, MLP, Logistic RegressionなどをGridSearchを用いてパラメータを変更しながら試しましたが、対して性能に差は見られませんでした。最終的にはSVMを用いています(カーネルはrbf)。
 
+![image_a](https://github.com/Kyutatsu/imagesFromTwitter/blob/staticfiles/drawing_photo(2).jpg)
+![image_a](https://github.com/Kyutatsu/imagesFromTwitter/blob/staticfiles/drawing_photo(1).jpg)
+![image_a](https://github.com/Kyutatsu/imagesFromTwitter/blob/staticfiles/drawing_photo.jpg)
