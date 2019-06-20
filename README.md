@@ -31,4 +31,4 @@ twitterではあるユーザのメディア欄という項目からユーザの�
 
 ![image_b](https://github.com/Kyutatsu/imagesFromTwitter/blob/staticfiles/drawing_photo%20(1).jpg)
 
-![image_c](https://github.com/Kyutatsu/imagesFromTwitter/blob/staticfiles/imageclf4.gif)
+![image_c](https://github.com/Kyutatsu/imagesFromTwitter/blob/staticfiles/drawing_photo4.jpg)
