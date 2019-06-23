@@ -3,13 +3,41 @@
 自分は機械学習に関して完全に初学者であったため、Courseraの機械学習コースなどで基本的な考え方を学習しつつ、scikit-learnのdocumentを読んで作成しました。
 
 ## 機能概要
-twitterに投稿された画像を閲覧できるアプリケーションです。機械学習を利用し、**絵と写真を区別して表示**します。
+twitterに投稿された画像を閲覧できるアプリケーションです。機械学習を利用し、**絵と写真を区別して表示**します。ぜひお試しください。
 
 ## 使用イメージ
 ![imageclf_gif](https://github.com/Kyutatsu/imagesFromTwitter/blob/staticfiles/imageclf4.gif)
 
-## 機能と使用技術の詳細
-- 
+## 機能と使用技術の一覧
+#### 機械学習部分
+- 絵/写真の分類
+  - scikit-learn
+  - NumPy
+  - Pandas
+- 画像データの取得
+  - twitter API
+  - requets: pythonのHTTPライブラリ
+  - requests_oauthlib: twitterにOauth1認証するためのpythonライブラリ
+  - PIL(pillow): pythonの画像加工ライブラリ
+
+#### Webアプリケーション部分
+- サーバーサイド
+  - Python3
+  - Django
+- クライアントサイド
+  - JavaScript
+  - Bootstrap
+- インフラ
+  - Linux(CentOS7)
+  - Apache
+  - MySQL
+
+- その他(デプロイ, バージョン管理, 開発)
+  - VPS(独自ドメインを取得し、さくらのVPSを借りて公開しています)
+  - Git
+  - Vim
+  - Vagrant, VirtualBox: デプロイの練習に使用した。
+
 
 ## 作成した背景
 twitterで活動するイラストレーター様の作品を閲覧することを想定しています。
@@ -21,12 +49,12 @@ twitterではメディア欄という項目から特定のユーザが投稿し�
 
 ## ファイル（Djangoプロジェクト)の構成
 このレポジトリのファイルの説明です。
-- getImagesFromTwitter
-  - 機械学習に用いるデータをtwitterから取得する、ラベル付けするためのアプリケーションです。開発者が使用するためのものです。
 - **imageclf**
   - メインの機能です。twitterのユーザIDを入力すると、学習済みのclassifierオブジェクトを用いて画像を分類します。分類後の画像をクリックすると該当するtweetのページを開きます。
+- getImagesFromTwitter
+  - 機械学習に用いるデータをtwitterから取得する、ラベル付けするためのアプリケーションです。開発者が使用するために作成したもので、公開していないので使用できません。コードは(あまり良いコードでは無いですが)ご覧いただけます。
 - makecsv.py
-  - PILによる画像データの変換に使っているコードです。
+  - PILによる画像データの変換に使っているコードなどをまとめています。
 - final_tool.dump
   - pickleで保存したpythonオブジェクトです。学習済みclassifierオブジェクトおよびデータの標準化に必要なデータを保存しています。
 
