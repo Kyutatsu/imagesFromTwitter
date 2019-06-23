@@ -3,7 +3,7 @@
 自分は機械学習に関して完全に初学者であったため、Courseraの機械学習コースなどで基本的な考え方を学習しつつ、scikit-learnのdocumentを読んで作成しました。
 
 ## 機能概要
-twitterに投稿された画像を閲覧できるアプリケーションです。機械学習を利用し、**絵と写真を区別して表示**します。ぜひお試しください。
+twitterに投稿された画像を閲覧できるアプリケーションです。機械学習を利用し、**絵と写真を区別して表示**します。[こちら](https://www.qtatsu.com)からぜひお試しください。
 
 ## 使用イメージ
 ![imageclf_gif](https://github.com/Kyutatsu/imagesFromTwitter/blob/staticfiles/imageclf4.gif)
