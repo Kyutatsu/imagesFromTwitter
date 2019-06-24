@@ -31,9 +31,11 @@ twitterに投稿された画像を閲覧できるアプリケーションです�
   - Linux(CentOS7)
   - Apache
   - MySQL
-
+  - mod_wsgi
+    - Daemon modeで使用してます。
 - その他(デプロイ, バージョン管理, 開発)
   - VPS(独自ドメインを取得し、さくらのVPSを借りて公開しています)
+  - SSL(Let's Encrypt)
   - Git
   - Vim
   - Vagrant, VirtualBox: デプロイの練習に使用した。
