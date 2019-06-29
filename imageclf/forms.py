@@ -2,7 +2,11 @@ from django import forms
 
 
 class IllustratorForm(forms.Form):
-    name = forms.CharField(max_length=100, label="ユーザ ID:")
+    name = forms.CharField(
+            max_length=100,
+            label="ユーザID:",
+            initial='qtatsu_q'
+    )
     CHOICES = [
             ('clf', 'イラスト/写真を分類する'),
             ('noclf', '分類しない'),
