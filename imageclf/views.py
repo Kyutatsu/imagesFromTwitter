@@ -116,11 +116,11 @@ def get_and_classify_images(request):
                         predict = clf.predict(features_scaled)[0]
                         if predict == 0:
                             proba = clf.predict_proba(features_scaled)[0,0]
-                            media['proba'] = proba
+                            media['proba'] = round(proba, ndigits=2)
                             illusts.append(media)
                         elif predict == 1:
                             proba = clf.predict_proba(features_scaled)[0,1]
-                            media['proba'] = proba
+                            media['proba'] = round(proba, ndigits=2)
                             photos.append(media)
             else:  # 分類しない時
                 return render(

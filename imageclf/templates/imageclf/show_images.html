@@ -5,7 +5,7 @@
 
 {% block style_add_block %}
       .sizeofthumb {
-        width: 20vw;
+        width: 33%;
         height: auto;
       }
 {% endblock %}
@@ -18,19 +18,19 @@
 </a>
 
 {% if not images %}
-<div class="container m-1">
+<div class="container">
   <div class="row">
     <div class="col-md-6 bg-secondary">
         <h2 class="col text-white align-self-center shadow">イラスト</h2>
         <div class="d-flex flex-wrap">
             {% for img in illust_data %}
-            <div class="sizeofthumb p-2 shadow-sm">
+            <div class="sizeofthumb p-2 shadow">
                       <a href="{{ img.tweet_url }}" target="_blank">
                         <img class="img-fluid" src="{{ img.media_url_https }}">
                       </a>
                       <p>{{ img.proba }}</p>
-                      {% if img.proba < 0.7 %}
-                        <h3>イラストじゃないかも？？</h3>
+                      {% if img.proba < 0.75 %}
+                        <p class="text-danger">イラストじゃないかも？？</p>
                       {% endif %}
             </div>
             {% endfor %}
@@ -41,13 +41,13 @@
       <h2 class="col align-self-center shadow">写真</h2>
       <div class="d-flex flex-wrap">
           {% for img in photo_data %}
-          <div class="sizeofthumb p-2 shadow-sm">
+          <div class="sizeofthumb p-2 shadow">
                     <a href="{{ img.tweet_url }}" target="_blank">
                       <img class="img-fluid" src="{{ img.media_url_https }}">
                     </a>
                     <p>{{ img.proba }}</p>
-                    {% if img.proba < 0.7 %}
-                      <h3>写真じゃないかも？？</h3>
+                    {% if img.proba < 0.75 %}
+                      <p class="text-danger">写真じゃないかも？？</p>
                     {% endif %}
           </div>
           {% endfor %}
