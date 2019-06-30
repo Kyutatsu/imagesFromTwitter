@@ -85,7 +85,7 @@ def get_and_classify_images(request):
             if form.cleaned_data.get('clf_status') == 'clf':
                 # すでにmediaが存在しないかチェック。
                 # process with classifier
-                path = os.path.join(BASE_DIR, 'final_tool.dump')
+                path = os.path.join(BASE_DIR, 'final_tool2.dump')
                 with open(path, mode='rb') as f:
                     data = pickle.load(f)
                 scaler = data['scaler']
