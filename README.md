@@ -74,3 +74,7 @@ twitterではメディア欄という項目から特定のユーザが投稿し�
 ![image_b](https://github.com/Kyutatsu/imagesFromTwitter/blob/staticfiles/drawing_photo%20(1).jpg)
 
 ![image_c](https://github.com/Kyutatsu/imagesFromTwitter/blob/staticfiles/drawing_photo4.jpg)
+
+## 反省点
+views.pyに処理を詰め込みすぎている。特に画像データ取得~分類までの処理は、例えばAPIを作成する時などにも流用できるはずなので、moduleにまとめるべきだった。修正予定。
+またテストを全く書いていないのは問題だと思うので、コードがこれ以上増えないうちに早めに書いてしまいたい。本来はもっと早く書き始めるべきであった。
