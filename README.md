@@ -1,5 +1,4 @@
-# みてくれたひとありがとおおおおお！！！
-# imagesFromTwitter
+# いらすとげったー:imagesFromTwitter
 機械学習とTwitterAPIを利用し、実際に役立つアプリケーションを作成することを目指しました。
 自分は機械学習に関して完全に初学者であったため、Courseraの機械学習コースなどで基本的な考え方を学習しつつ、scikit-learnのdocumentを読んで作成しました。
 
